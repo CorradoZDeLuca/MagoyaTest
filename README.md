@@ -1,7 +1,7 @@
 # MagoyaTest
 
 ## Steps For Running the App
-
+### Run this code in your Terminal
 
 `$ virtualenv testenv`
 `$ source env/bin/activate`
