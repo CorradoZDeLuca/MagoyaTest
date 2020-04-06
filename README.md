@@ -10,6 +10,6 @@
  $ npm install`
 ### in backend/
 `$ python3 manage.py runserver`
-### in fronted/
+### in fronted/accounting/
 `$ npm start`
 
