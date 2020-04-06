@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { useMutation} from '@apollo/react-hooks';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
+import InfoIcon from '@material-ui/icons/Info';
 
 const CREATE_TRANSACTION = gql`
   mutation CreateTransaction(   $date: Date,
@@ -44,15 +45,19 @@ export default function CreateTransaction(props){
     }             
     return (
         <div style={{float:"left"}}>
+
         <Grid container spacing={20} style={{width:"50%",marginLeft:"4%",float:"left",marginTop:"10%",border:"solid"}}>
             <Grid xs={12}>
+                <IconButton onMouseOver={event => setAnchorEl(event.currentTarget)} onMouseLeave={()=>setAnchorEl(null)}>
+                    <InfoIcon />
+                </IconButton>
                 <Typography style={{textAlign:"center"}} variant="h4">Create Transaction</Typography>
             </Grid>
             <Grid xs={6}>
                 <TextField style={{margin:"5%"}} id="date" variant="outlined" type="date" onChange={onChangeData}/>
             </Grid>
             <Grid xs={6}>
-                <FormControl variant="outlined" style={{width:"50%",margin:"5%"}}>
+                <FormControl variant="outlined" style={{width:200,margin:"5%"}}>
                     <InputLabel>Card Type</InputLabel>
                     <Select onChange={(event)=>setVariables({...variables,cardType:event.target.value})}>
                     <MenuItem value={"credit"}>Credit Card</MenuItem>
@@ -70,6 +75,11 @@ export default function CreateTransaction(props){
                 <Button color="primary" variant="contained" style={{float:"right",margin:"2%"}} onClick={()=>{createTransaction({variables:variables});refreshPage()}}>Create</Button>
             </div>
         </Grid>
+        <Popper anchorEl={anchorEl} open={Boolean(anchorEl)} placement="top">
+            <Paper style={{pading:"2%"}}>
+                <Typography>Remember to add an account balance, also the transaction cost must be above zero</Typography>
+            </Paper>
+        </Popper>
         </div>
     )
 }
