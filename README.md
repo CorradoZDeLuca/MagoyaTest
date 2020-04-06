@@ -6,7 +6,7 @@
 `$ virtualenv testenv`
 `$ source env/bin/activate`
 `$ pip3 -r requirements.txt`
-`$ cd frontend/
+`$ cd frontend/accounting
  $ npm install`
 #### in backend/
 `$ python3 manage.py runserver`
