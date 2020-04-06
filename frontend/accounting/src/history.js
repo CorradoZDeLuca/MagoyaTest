@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { useQuery  } from '@apollo/react-hooks';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useMutation} from '@apollo/react-hooks';
-
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 const ALL_TRANSACTIONS = gql`{
     allTransactions{
@@ -41,7 +41,7 @@ export default function TransactonsHistory(props){
     }
 
     
-    function refreshPage() {
+    const refreshPage =()=> {
         window.location.reload(false);
     }
 
@@ -58,7 +58,7 @@ export default function TransactonsHistory(props){
                                 <TableCell>Cost</TableCell>
                                 <TableCell>Comment</TableCell>
                                 <TableCell>Date</TableCell>
-                                <TableCell></TableCell>
+                                <TableCell><IconButton onClick={refreshPage}><RefreshIcon /></IconButton></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody style={{backgroundColor:"white"}} >
@@ -67,7 +67,7 @@ export default function TransactonsHistory(props){
                             {data.allTransactions.map(transaction=>{return(
                               <> 
                             <TableRow onMouseLeave={(e)=>MouseLeave(e)} onMouseEnter={(e)=>MouseOver(e)} style={{cursor:"pointer"}}>
-                                        <TableCell >{cardTypes[transaction.cardType]}</TableCell>
+                                        <TableCell style={{color:transaction.cardType == "CREDIT" ? "green" : "blue"}} >{cardTypes[transaction.cardType]}</TableCell>
                                         <TableCell >${transaction.cost}</TableCell>
                                         <TableCell >{transaction.comment}</TableCell>
                                         <TableCell >{transaction.date}</TableCell>

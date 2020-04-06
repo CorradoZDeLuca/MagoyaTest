@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import {TextField,Typography,MenuItem ,Select,FormControl ,Popper,ClickAwayListener, Button,IconButton, Paper, InputLabel,Grid} from '@material-ui/core';
+import {TextField,Typography,MenuItem ,Select,FormControl ,Popper, Button,IconButton, Paper, InputLabel,Grid} from '@material-ui/core';
 import gql from 'graphql-tag';
 import { useMutation} from '@apollo/react-hooks';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CreditCardIcon from '@material-ui/icons/CreditCard';
 import InfoIcon from '@material-ui/icons/Info';
+import ErrorIcon from '@material-ui/icons/Error';
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 
 const CREATE_TRANSACTION = gql`
   mutation CreateTransaction(   $date: Date,
@@ -36,17 +36,26 @@ export default function CreateTransaction(props){
                                         )
 
     const [anchorEl,setAnchorEl] = useState(null)
-    const cardTypes = {"credit":"Credit Card","debit":"Debit Card"}                                      
-    function refreshPage() {
-        window.location.reload(false);
-    }
+    const [alert,setShowAlert] = useState({isOpen:false,message:""})
     const onChangeData = (event) =>{
         setVariables({...variables,[event.currentTarget.id]:event.currentTarget.value })
     }             
-    return (
-        <div style={{float:"left"}}>
+    const onCreate = () => {
+        if(variables.cardType  && variables.date && (props.accountBalance - variables.cost >= 0)){
+            setShowAlert({isOpen:true,message:"You Have Create a new transaction! Reload The table",variant:"success"})
+            setTimeout(function(){setShowAlert({isOpen:false})}, 2000)
+            createTransaction({variables:variables})
+        }else{
+            setShowAlert({isOpen:true,message:"Remeber that all inputs are require! and balance must be positve",variant:"error"})
+            setTimeout(function(){setShowAlert({isOpen:false})}, 2000)
+        }
 
-        <Grid container spacing={20} style={{width:"50%",marginLeft:"4%",float:"left",marginTop:"10%",border:"solid"}}>
+
+    }
+    return (
+        <div style={{textAlign:"left",width:"40%",positon:"absolute"}}>
+
+        <Grid container spacing={20} style={{marginLeft:"4%",float:"left",marginTop:"10%",border:"solid"}}>
             <Grid xs={12}>
                 <IconButton onMouseOver={event => setAnchorEl(event.currentTarget)} onMouseLeave={()=>setAnchorEl(null)}>
                     <InfoIcon />
@@ -72,7 +81,8 @@ export default function CreateTransaction(props){
                 <TextField style={{margin:"5%"}} id="comment" variant="outlined" label="Comment" onChange={onChangeData}/>
             </Grid>
             <div style={{width:"100%"}}>
-                <Button color="primary" variant="contained" style={{float:"right",margin:"2%"}} onClick={()=>{createTransaction({variables:variables});refreshPage()}}>Create</Button>
+    {alert.isOpen ?   <Paper style={{position:"absolute",padding:"1%",color:alert.variant == "success" ? "green" : "red"}} >{alert.variant == "error" ? <ErrorIcon style={{margin:"1%"}}/> : <DoneOutlineIcon style={{margin:"1%"}} />}{alert.message}</Paper> : null}
+                <Button color="primary" variant="contained" style={{float:"right",margin:"2%"}} onClick={()=>{onCreate()}}>Create</Button>
             </div>
         </Grid>
         <Popper anchorEl={anchorEl} open={Boolean(anchorEl)} placement="top">

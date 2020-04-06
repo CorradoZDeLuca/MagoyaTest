@@ -37,8 +37,8 @@ class CreateTransaction(graphene.Mutation):
         if account.value - inputs.get("cost") >= 0 and inputs.get("cost") > 0 and  inputs.get("date") and inputs.get("card_type"):
             account.value = account.value - inputs.get("cost")
             transaction = Transaction(date=inputs.get("date"),card_type=inputs.get("card_type"),cost=inputs.get("cost"),comment=inputs.get("comment"),account=account)
-        account.save()        
-        transaction.save()
+            account.save()        
+            transaction.save()
             
         return CreateTransaction(transaction=transaction)
     
