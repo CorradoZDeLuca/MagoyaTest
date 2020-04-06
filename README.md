@@ -1,15 +1,15 @@
 # MagoyaTest
 
 ## Steps For Running the App
-### Run this code in your Terminal
+### Run this code in your MagoyaTest/
 
 `$ virtualenv testenv`
 `$ source env/bin/activate`
 `$ pip3 -r requirements.txt`
 `$ cd frontend/
  $ npm install`
-### in backend/
+#### in backend/
 `$ python3 manage.py runserver`
-### in fronted/accounting/
+#### in fronted/accounting/
 `$ npm start`
 
