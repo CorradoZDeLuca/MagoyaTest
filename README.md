@@ -1,6 +1,6 @@
 # MagoyaTest
 
-##Steps For Running the App
+## Steps For Running the App
 
 
 `$ virtualenv testenv`
